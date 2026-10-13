@@ -6,6 +6,8 @@ jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
       - run: pip install -U huggingface_hub
       - run: python -c "from huggingface_hub import snapshot_download; snapshot_download('ivrit-ai/whisper-large-v3-turbo-ct2', local_dir='m')"
       - run: ls -la m
