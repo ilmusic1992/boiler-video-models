@@ -1,0 +1,18 @@
+name: fetch-model
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pip install -U huggingface_hub
+      - run: python -c "from huggingface_hub import snapshot_download; snapshot_download('ivrit-ai/whisper-large-v3-turbo-ct2', local_dir='m')"
+      - run: ls -la m
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh release create he-whisper-v1 m/*
+          --repo ${{ github.repository }}
+          --title "Hebrew Whisper (ivrit-ai)"
+          --notes "ivrit-ai/whisper-large-v3-turbo-ct2 - Apache-2.0 - used by the Boiler Room video skill"
